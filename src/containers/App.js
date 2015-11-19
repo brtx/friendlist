@@ -1,31 +1,37 @@
 /* src/containers/App.js */
 
-import React, { Component } from 'react';  
-import { combineReducers } from 'redux';  
-import { Provider } from 'react-redux';
+import React, { Component } from 'react';
+import { bindActionCreators } from 'redux';  
+import { connect } from 'react-redux';
 
-import { createStore, renderDevTools } from '../utils/devTools';
-import * as reducers from '../reducers/index';
-import FriendListApp from './FriendListContainer';  
+import AddFriendInput from '../components/AddFriendInput';
+import FriendList from '../components/FriendList';
+import * as FriendsActions from '../actions/FriendsActions';
 
-import { addFriend, deleteFriend, starFriend } from '../actions/FriendsActions';
-
-const reducer = combineReducers(reducers);  
-const store = createStore(reducer);
-
-store.dispatch(addFriend('Barack Obama'));
-store.dispatch(deleteFriend(1));
-store.dispatch(starFriend(4));
-
-export default class App extends Component {  
+class App extends Component {  
   render() {
+    const { friendlist, dispatch } = this.props;
+    
+    // Turns an object whose values are action creators, into an object with the same keys, but 
+    // with every action creator wrapped into a dispatch call so they may be invoked directly.
+    const actions = bindActionCreators(FriendsActions, dispatch);
+
     return (
       <div>
-        <Provider store={store}>
-          <FriendListApp />
-        </Provider>
-        {renderDevTools(store)}
+        <h1>The FriendList</h1>
+        <AddFriendInput addFriend={actions.addFriend} />
+        <FriendList friends={friendlist} />
       </div>
     );
   }
 }
+
+// Maps which part of the Redux global state our component wants to receive as props.
+function mapStateToProps(state) {
+  return {
+    friendlist: state.friends 
+  }
+}
+
+// Connects the React App container to the Redux store.
+export default connect(mapStateToProps)(App);

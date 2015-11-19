@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-let ReactDOM = require('react-dom');
 
 export default class AddFriendInput extends Component {
 	constructor(props) {

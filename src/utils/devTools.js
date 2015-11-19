@@ -12,7 +12,8 @@ if (__DEV__) {
   )(createStore);
 }
 
-export function renderDevTools(store) {  
+export function renderDevTools(store) {
+  console.log("Hallooooo+");  
   if (__DEV__ || true) {
     let {DevTools, DebugPanel, LogMonitor} = require('redux-devtools/lib/react');
     return (
