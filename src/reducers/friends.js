@@ -39,7 +39,7 @@ export function friends(state = initialState, action) {
         }
       }
       
-      case types.DELETE_FRIEND:  
+    case types.DELETE_FRIEND:  
       return {
         ...state,
         friends: state.friends.filter(id => id !== action.id),
